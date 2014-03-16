@@ -1,5 +1,6 @@
 from mezzanine.pages.admin import PageAdmin
 from django.contrib.gis import admin
-from .models import *
+from .models import TestResource
+from hs_core.admin import GenericResourceAdmin
 
-# admin.site.register(MyResource, PageAdmin)
+admin.site.register(TestResource, GenericResourceAdmin)

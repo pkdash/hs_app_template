@@ -8,39 +8,38 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'GenericResource'
-        db.create_table(u'hs_core_genericresource', (
+        # Adding model 'TestResource'
+        db.create_table(u'hs_test_app_testresource', (
             (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            (u'comments_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('content', self.gf('mezzanine.core.fields.RichTextField')()),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'genericresources', to=orm['auth.User'])),
-            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(related_name='creator_of', to=orm['auth.User'])),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'testresources', to=orm['auth.User'])),
+            ('creator', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'creator_of_hs_test_app_testresource', to=orm['auth.User'])),
             ('public', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('do_not_distribute', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('discoverable', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('published_and_frozen', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('last_changed_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name='last_changed', null=True, to=orm['auth.User'])),
-            ('resource_file', self.gf('django.db.models.fields.files.FileField')(max_length=100, null=True, blank=True)),
-            ('resource_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('last_changed_by', self.gf('django.db.models.fields.related.ForeignKey')(related_name=u'last_changed_hs_test_app_testresource', null=True, to=orm['auth.User'])),
         ))
-        db.send_create_signal(u'hs_core', ['GenericResource'])
+        db.send_create_signal(u'hs_test_app', ['TestResource'])
 
-        # Adding M2M table for field owners on 'GenericResource'
-        m2m_table_name = db.shorten_name(u'hs_core_genericresource_owners')
+        # Adding M2M table for field owners on 'TestResource'
+        m2m_table_name = db.shorten_name(u'hs_test_app_testresource_owners')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('genericresource', models.ForeignKey(orm[u'hs_core.genericresource'], null=False)),
+            ('testresource', models.ForeignKey(orm[u'hs_test_app.testresource'], null=False)),
             ('user', models.ForeignKey(orm[u'auth.user'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['genericresource_id', 'user_id'])
+        db.create_unique(m2m_table_name, ['testresource_id', 'user_id'])
 
 
     def backwards(self, orm):
-        # Deleting model 'GenericResource'
-        db.delete_table(u'hs_core_genericresource')
+        # Deleting model 'TestResource'
+        db.delete_table(u'hs_test_app_testresource')
 
-        # Removing M2M table for field owners on 'GenericResource'
-        db.delete_table(db.shorten_name(u'hs_core_genericresource_owners'))
+        # Removing M2M table for field owners on 'TestResource'
+        db.delete_table(db.shorten_name(u'hs_test_app_testresource_owners'))
 
 
     models = {
@@ -80,21 +79,20 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        u'hs_core.genericresource': {
-            'Meta': {'ordering': "(u'_order',)", 'object_name': 'GenericResource', '_ormbases': [u'pages.Page']},
+        u'hs_test_app.testresource': {
+            'Meta': {'ordering': "(u'_order',)", 'object_name': 'TestResource', '_ormbases': [u'pages.Page']},
+            u'comments_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'content': ('mezzanine.core.fields.RichTextField', [], {}),
-            'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'creator_of'", 'to': u"orm['auth.User']"}),
+            'creator': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'creator_of_hs_test_app_testresource'", 'to': u"orm['auth.User']"}),
             'discoverable': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'do_not_distribute': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_changed_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'last_changed'", 'null': 'True', 'to': u"orm['auth.User']"}),
-            'owners': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'owns'", 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
+            'last_changed_by': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'last_changed_hs_test_app_testresource'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'owners': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "u'owns_hs_test_app_testresource'", 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
             'public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'published_and_frozen': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'resource_file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
-            'resource_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'genericresources'", 'to': u"orm['auth.User']"})
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'testresources'", 'to': u"orm['auth.User']"})
         },
         u'pages.page': {
             'Meta': {'ordering': "(u'titles',)", 'object_name': 'Page'},
@@ -128,4 +126,4 @@ class Migration(SchemaMigration):
         }
     }
 
-    complete_apps = ['hs_core']
+    complete_apps = ['hs_test_app']
