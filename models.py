@@ -11,7 +11,7 @@ from hs_core.models import AbstractResource
 
 class TestResource(Page, RichText, AbstractResource):
     resource_file = models.FileField(
-        null=False,
+        null=True,
         default='',
         upload_to='test_resource', # this will be the new folder under static/media off from the hydroshare2 dir
         help_text='This should be a text file.'
@@ -21,4 +21,5 @@ class TestResource(Page, RichText, AbstractResource):
         default='',
         help_text="Provide a description for this resource."
     )
+
 
